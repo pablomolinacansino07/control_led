@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Define la codificación de caracteres para permitir acentos y caracteres especiales -->
+    <meta charset="UTF-8">
+    <!-- Ajusta la vista para que sea adaptable a dispositivos móviles y pantallas de distintos tamaños -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control LED Arduino</title>
+    <!-- Vincula la hoja de estilos externa para aplicar el diseño CSS -->
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+    <!-- Contenedor principal tipo tarjeta para centralizar la interfaz -->
+    <main class="card">
+        <!-- Encabezado con título principal y subtítulo de la aplicación -->
+        <header>
+            <h1>CONTROL LED ARDUINO</h1>
+            <p>Controla un LED desde tu navegador</p>
+        </header>
+
+        <!-- Sección para gestionar la conexión del puerto USB/Serie -->
+        <section class="conexion-container">
+            <button id="btnConectar" class="btn btn-conectar">Conectar con Arduino</button>
+        </section>
+
+        <!-- Indicador visual del estado actual del LED con animación de luz -->
+        <section class="estado-container">
+            <div id="indicadorEstado" class="estado apagado">
+                <div class="led-info">
+                    <!-- Contenedor del diodo con efecto de ondas y luz -->
+                    <div class="led-wrapper">
+                        <span class="led-onda"></span>
+                        <span id="ledLuz" class="led-luz"></span>
+                    </div>
+                    <span id="textoEstado">LED APAGADO</span>
+                </div>
+                <span id="badgeEstado" class="badge">OFF</span>
+            </div>
+        </section>
+
+        <!-- Botones de interacción para enviar órdenes al LED -->
+        <section class="controles-container">
+            <button id="btnEncender" class="btn btn-encender" disabled>Encender</button>
+            <button id="btnApagar" class="btn btn-apagar" disabled>Apagar</button>
+        </section>
+
+        <!-- Pie de página con asignatura y nombres de los alumnos -->
+        <footer>
+            <p class="asignatura">Proyecto Intermodular</p>
+            <p class="autores">Pablo Molina Cansino y Juan Rodríguez Muñoz</p>
+        </footer>
+    </main>
+
+    <!-- Enlace al archivo de JavaScript para ejecutar la comunicación por Web Serial API -->
+    <script src="script.js"></script>
+</body>
+</html>

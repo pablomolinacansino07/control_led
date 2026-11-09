@@ -1,0 +1,288 @@
+/* Restablece márgenes y rellenos por defecto en todos los elementos del documento */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Centra el contenedor principal vertical y horizontalmente con fondo gris claro */
+body {
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Define el aspecto visual tipo tarjeta contenedora */
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    text-align: center;
+    width: 340px;
+}
+
+/* Estilo del título principal del proyecto */
+header h1 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+/* Estilo del subtítulo indicativo */
+header p {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+}
+
+/* Estilo común para los botones de la interfaz */
+.btn {
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 12px 20px;
+    transition: background-color 0.2s, opacity 0.2s, transform 0.1s;
+    width: 100%;
+}
+
+.btn:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+/* Deshabilita interacciones visuales cuando el botón está inactivo */
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Botón de conexión con la placa Arduino por USB */
+.btn-conectar {
+    background-color: #3498db;
+    margin-bottom: 20px;
+}
+
+.btn-conectar:hover:not(:disabled) {
+    background-color: #2980b9;
+}
+
+/* Botón para encender el LED */
+.btn-encender {
+    background-color: #2ecc71;
+    margin-bottom: 10px;
+}
+
+.btn-encender:hover:not(:disabled) {
+    background-color: #27ae60;
+}
+
+/* Botón para apagar el LED */
+.btn-apagar {
+    background-color: #e74c3c;
+}
+
+.btn-apagar:hover:not(:disabled) {
+    background-color: #c0392b;
+}
+
+/* Contenedor del recuadro de estado */
+.estado-container {
+    margin-bottom: 25px;
+}
+
+/* Alineación interna de la caja de estado */
+.estado {
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.led-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+/* Contenedor relativo para el diodo y la onda expansiva */
+.led-wrapper {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Diodo LED circular central */
+.led-luz {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 2;
+    transition: all 0.4s ease;
+}
+
+/* Aro de onda expansiva animada */
+.led-onda {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    z-index: 1;
+    opacity: 0;
+}
+
+/* ========================================================
+   ANIMACIONES ESTADO: APAGADO
+   ======================================================== */
+.estado.apagado {
+    background-color: #f8f9fa;
+    border: 2px solid #dcdfe6;
+    color: #73767a;
+    box-shadow: none;
+    animation: animacion-apagar-caja 0.5s ease-in-out;
+}
+
+.estado.apagado .led-luz {
+    background-color: #909399;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.estado.apagado .badge {
+    background-color: #909399;
+    color: #ffffff;
+}
+
+/* ========================================================
+   ANIMACIONES ESTADO: ENCENDIDO
+   ======================================================== */
+.estado.encendido {
+    background-color: #e8f8f5;
+    border: 2px solid #2ecc71;
+    color: #1e8449;
+    box-shadow: 0 0 18px rgba(46, 204, 113, 0.35);
+    animation: animacion-encender-caja 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.estado.encendido .led-luz {
+    background-color: #2ecc71;
+    box-shadow: 0 0 10px #2ecc71, 0 0 20px #2ecc71;
+    animation: resplandor-led 1.5s infinite alternate ease-in-out;
+}
+
+/* Activa la onda expansiva circular continua al encender */
+.estado.encendido .led-onda {
+    border: 2px solid #2ecc71;
+    animation: onda-expansiva 1.8s infinite linear;
+}
+
+.estado.encendido .badge {
+    background-color: #2ecc71;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.6);
+    animation: pulso-badge 1.5s infinite alternate ease-in-out;
+}
+
+/* Formato general de la etiqueta Badge (ON/OFF) */
+.badge {
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    transition: all 0.4s ease;
+}
+
+/* ========================================================
+   KEYFRAMES DE ANIMACIONES
+   ======================================================== */
+
+/* Resplandor pulsante del LED verde */
+@keyframes resplandor-led {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 6px #2ecc71, 0 0 12px #2ecc71;
+    }
+    100% {
+        transform: scale(1.15);
+        box-shadow: 0 0 14px #2ecc71, 0 0 28px #2ecc71;
+    }
+}
+
+/* Anillo de luz en expansión continua */
+@keyframes onda-expansiva {
+    0% {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(2.6);
+        opacity: 0;
+    }
+}
+
+/* Pulso sutil para el distintivo ON */
+@keyframes pulso-badge {
+    0% {
+        opacity: 0.85;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Entrada animada al encender la tarjeta */
+@keyframes animacion-encender-caja {
+    0% {
+        transform: scale(0.96);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Salida animada suave al apagar la tarjeta */
+@keyframes animacion-apagar-caja {
+    0% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Estilos del pie de página */
+footer {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+    color: #7f8c8d;
+}
+
+/* Formato para el nombre de la asignatura */
+footer .asignatura {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #34495e;
+    margin-bottom: 4px;
+}
+
+/* Formato para los nombres de los autores */
+footer .autores {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+}
